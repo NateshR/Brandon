@@ -1,29 +1,29 @@
 #!/bin/bash
 function copyBuildToTagFolder {
         newDir="builds/"$tagFolder
-        mkdir -p $newDir
-        echo "----DIRECTORY: "$newDir
-        (cd ~/Brandoni/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
+        dirExists=$(mkdir -p $newDir)
+	echo $dirExists
+        echo "----DIRECTORY: "$newDir"----"
+        (cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
 }
 
 
-echo "BUILD APK STARTED"
+echo "----BUILD APK STARTED-----"
 inputValue=${1,,}
 inputTagValue=${2,,}
 cleanCommand="bash gradlew clean"
 fetchTag=$( cd ~/curofy && git fetch --tags )
-Red='\033[0;31m'  
 if [[ $inputValue == *"prod"* ]]; then
-        echo "${Red}----PRODCUTION----"
-	echo "${Red}----ClEAN----"
+        echo "----PRODCUTION----"
+	echo "----ClEAN----"
         (cd ~/curofy && $cleanCommand)
-	echo "${Red}----BUILD----"
+	echo "----BUILD----"
         buildCommand="assembleProductionDebug"
 elif [[ $inputValue == *"stag"* ]]; then
         echo "----STAGING----"
-	echo "${Red}----CLEAN----"
+	echo "----CLEAN----"
         (cd ~/curofy && $cleanCommand)
-	echo "${Red}----BUILD----"
+	echo "----BUILD----"
         buildCommand="assembleStagingDebug"
 fi
 if [[ ! -z $buildCommand ]]; then
