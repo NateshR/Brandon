@@ -1,4 +1,4 @@
 #!/bin/bash
-(cd ~/curofy && git fetch --tags)
-git tag >> ~/Brandon/tags.txt
+( cd ~/curofy && git fetch --tags )
+( cd ~/curofy && git tag >> ~/Brandon/tags.txt )
 
