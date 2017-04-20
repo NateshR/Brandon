@@ -1,10 +1,9 @@
 #!/bin/bash
 function copyBuildToTagFolder {
         newDir="builds/"$tagFolder
-        dirExists=$(mkdir -p $newDir)
-	echo $dirExists
+        ( cd ~/Brandon/ &&  $(mkdir -p $newDir))
         echo "----DIRECTORY: "$newDir"----"
-        (cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
+        (cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir"/")
 }
 
 
@@ -32,13 +31,13 @@ if [[ ! -z $buildCommand ]]; then
                 $fetchTag
                 echo "----Git checking out... -"$inputTagValue"----"
                 ( cd ~/curofy && git checkout $inputTagValue )
-                tagFolder=$inputTagValue"/"
+                tagFolder=$inputTagValue
         else
 		echo "----Fetching....----"
                 echo "----Git checking out... -development""----"
                 ( cd ~/curofy && git fetch origin development && git checkout development )
                 latestCommitHash=$(git log -n 1 | grep "commit" | awk '{print $2}')
-                tagFolder="development_"$latestCommitHash"/"
+                tagFolder="development_"$latestCommitHash
         fi
         ( cd ~/curofy && bash gradlew $buildCommand )
         trap copyBuildToTagFolder EXIT
