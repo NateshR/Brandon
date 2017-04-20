@@ -1,9 +1,9 @@
 #!/bin/bash
 function copyBuildToTagFolder {
-        echo "COPYING INTO RESPECTIVE TAG FOLDER"
         newDir="builds/"$tagFolder
         mkdir -p $newDir
-        (cd ~/ApkBuilder/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
+        echo "----DIRECTORY: "$newDir
+        (cd ~/Brandoni/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
 }
 
 
@@ -12,24 +12,30 @@ inputValue=${1,,}
 inputTagValue=${2,,}
 cleanCommand="bash gradlew clean"
 fetchTag=$( cd ~/curofy && git fetch --tags )
-
+Red='\033[0;31m'  
 if [[ $inputValue == *"prod"* ]]; then
-        echo "----PRODCUTION----"
+        echo "${Red}----PRODCUTION----"
+	echo "${Red}----ClEAN----"
         (cd ~/curofy && $cleanCommand)
+	echo "${Red}----BUILD----"
         buildCommand="assembleProductionDebug"
 elif [[ $inputValue == *"stag"* ]]; then
         echo "----STAGING----"
+	echo "${Red}----CLEAN----"
         (cd ~/curofy && $cleanCommand)
+	echo "${Red}----BUILD----"
         buildCommand="assembleStagingDebug"
 fi
 if [[ ! -z $buildCommand ]]; then
         if [[ ! -z $inputTagValue ]]; then
-                echo "Git checking out... -"$inputTagValue
+		echo "----Fetching....----"
                 $fetchTag
+                echo "----Git checking out... -"$inputTagValue"----"
                 ( cd ~/curofy && git checkout $inputTagValue )
                 tagFolder=$inputTagValue"/"
         else
-                echo "Git checking out... -development"
+		echo "----Fetching....----"
+                echo "----Git checking out... -development""----"
                 ( cd ~/curofy && git fetch origin development && git checkout development )
                 latestCommitHash=$(git log -n 1 | grep "commit" | awk '{print $2}')
                 tagFolder="development_"$latestCommitHash"/"
