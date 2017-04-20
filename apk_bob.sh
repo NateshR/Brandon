@@ -1,9 +1,8 @@
 #!/bin/bash
-function copyBuildToTagFolder {
-        newDir="builds/"$tagFolder
-        ( cd ~/Brandon/ &&  $(mkdir -p $newDir))
-        echo "----DIRECTORY: "$newDir"----"
-        (cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir"/")
+function copyBuildToTagFolder {  
+        mkdir -p $newDir
+	echo "----COPYING----"
+	(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir"/")
 }
 
 
@@ -13,13 +12,15 @@ inputTagValue=${2,,}
 cleanCommand="bash gradlew clean"
 fetchTag=$( cd ~/curofy && git fetch --tags )
 if [[ $inputValue == *"prod"* ]]; then
-        echo "----PRODCUTION----"
+	buildType="PRODUCTION"
+        echo "----"$buildType"----"
 	echo "----ClEAN----"
         (cd ~/curofy && $cleanCommand)
 	echo "----BUILD----"
         buildCommand="assembleProductionDebug"
 elif [[ $inputValue == *"stag"* ]]; then
-        echo "----STAGING----"
+	buildType="STAGING"
+        echo "----"$buildType"----"
 	echo "----CLEAN----"
         (cd ~/curofy && $cleanCommand)
 	echo "----BUILD----"
@@ -31,16 +32,20 @@ if [[ ! -z $buildCommand ]]; then
                 $fetchTag
                 echo "----Git checking out... -"$inputTagValue"----"
                 ( cd ~/curofy && git checkout $inputTagValue )
-                tagFolder=$inputTagValue
+                tagFolder=$buildType"_"$inputTagValue
         else
 		echo "----Fetching....----"
                 echo "----Git checking out... -development""----"
                 ( cd ~/curofy && git fetch origin development && git checkout development )
                 latestCommitHash=$(git log -n 1 | grep "commit" | awk '{print $2}')
-                tagFolder="development_"$latestCommitHash
+                tagFolder=$buildType"_development_"$latestCommitHash
         fi
-        ( cd ~/curofy && bash gradlew $buildCommand )
-        trap copyBuildToTagFolder EXIT
+  	newDir=~/"Brandon/builds/"$tagFolder
+	echo "----DIRECTORY: "$newDir"----"
+	if [[ ! -d $newDir ]]; then
+        	( cd ~/curofy && bash gradlew $buildCommand )
+	      	trap copyBuildToTagFolder EXIT			
+	fi
 else
         echo "Please enter correct build type"
 fi
