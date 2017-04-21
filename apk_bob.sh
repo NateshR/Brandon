@@ -15,7 +15,7 @@ function copyBuildToTagFolder {
 	echo "----COPYING----"
 	(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
 	newFileName=$(ls $newDir)	
-	echo "----DIRECTORY: $newFileName ----"
+	echo "----DIRECTORY: $newDir"/"$newFileName ----"
 }
 
 echo "----BUILD APK STARTED-----"
@@ -48,7 +48,7 @@ if [[ ! -z $buildCommand ]]; then
 	      	trap copyBuildToTagFolder EXIT		
 	else
 		newFileName=$(ls $newDir)	
-		echo "----DIRECTORY: $newFileName ----"
+		echo "----DIRECTORY: $newDir"/"$newFileName ----"
 	fi
 else
         echo "Please enter correct build type"
