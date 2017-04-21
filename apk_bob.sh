@@ -14,8 +14,10 @@ function copyBuildToTagFolder {
         mkdir -p $newDir
 	echo "----COPYING----"
 	(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir"/")
-	echo "----DIRECTORY: "ls $newDir"----"
+	newFileName=$(ls $newDir)
+	echo "----DIRECTORY: "$newFileName"----"
 }
+
 echo "----BUILD APK STARTED-----"
 inputValue=${1,,}
 inputTagValue=${2,,}
