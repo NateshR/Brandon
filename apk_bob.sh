@@ -42,7 +42,7 @@ if [[ ! -z $buildCommand ]]; then
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
   	newDir=~/"Brandon/builds/"$tagFolder
-	if [[ ! -d  $newDir &&  -z $(ls - A $newDir) ]]; then
+	if [[ ! -d  $newDir ||  -z $(ls - A $newDir) ]]; then
 		echo "----BUILDING NEW----"
         	( cd ~/curofy && bash gradlew $buildCommand )
 	      	trap copyBuildToTagFolder EXIT		
