@@ -37,7 +37,7 @@ if [[ ! -z $buildCommand ]]; then
                 tagFolder=$buildType"_"$inputTagValue
         else
                 echo "----Git checking out... -development""----"
-                ( cd ~/curofy  && git checkout development && git pull origin development )
+                ( cd ~/curofy  && git checkout development && cd ~/curofy && git pull origin development )
                 latestCommitHash=$(git log -n 1 | grep "commit" | awk '{print $2}')
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
