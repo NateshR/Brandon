@@ -14,6 +14,7 @@ function copyBuildToTagFolder {
         mkdir -p $newDir
 	echo "----COPYING----"
 	(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
+	newFileName=$(ls $newDir)	
 	echo "----DIRECTORY: $newFileName ----"
 }
 
@@ -42,11 +43,11 @@ if [[ ! -z $buildCommand ]]; then
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
   	newDir=~/"Brandon/builds/"$tagFolder
-	newFileName=$(ls $newDir)	
 	if [[ ! -d $newDir ]]; then
         	( cd ~/curofy && bash gradlew $buildCommand )
 	      	trap copyBuildToTagFolder EXIT		
 	else
+		newFileName=$(ls $newDir)	
 		echo "----DIRECTORY: $newFileName ----"
 	fi
 else
