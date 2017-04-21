@@ -38,7 +38,7 @@ if [[ ! -z $buildCommand ]]; then
         else
                 echo "----Git checking out... -development""----"
                 ( cd ~/curofy  && git checkout development  && git pull origin development )
-                latestCommitHash=$((cd ~/curofy) && (git log -n 1 | grep "commit" | awk '{print $2}'))
+                latestCommitHash=$(cd ~/curofy && git log -n 1 | grep "commit" | awk '{print $2}')
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
   	newDir=~/"Brandon/builds/"$tagFolder
