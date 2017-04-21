@@ -3,7 +3,6 @@ function buildCommandIndentifier {
         echo "----"$buildType"----"
 	echo "----ClEAN----"
         (cd ~/curofy && $cleanCommand)
-	echo "----BUILD----"
 	if [[ $buildType == "PRODUCTION" ]]; then
 	        buildCommand="assembleProductionDebug"
 	else
@@ -43,7 +42,8 @@ if [[ ! -z $buildCommand ]]; then
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
   	newDir=~/"Brandon/builds/"$tagFolder
-	if [[ ! -d $newDir ]]; then
+	if [[ -z $(ls - A newDir) ]]; then
+		echo "----BUILDING NEW----"
         	( cd ~/curofy && bash gradlew $buildCommand )
 	      	trap copyBuildToTagFolder EXIT		
 	else
