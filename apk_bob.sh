@@ -14,8 +14,7 @@ function copyBuildToTagFolder {
         mkdir -p $newDir
 	echo "----COPYING----"
 	(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/* $newDir)
-	newFileName=$(ls $newDir)
-	echo "----DIRECTORY:   $newFileName   ----"
+	echo "----DIRECTORY: $newFileName ----"
 }
 
 echo "----BUILD APK STARTED-----"
@@ -31,7 +30,7 @@ fi
 buildCommandIndentifier
 if [[ ! -z $buildCommand ]]; then
 	echo "----Fetching....----"
-        if [[ ! -z $inputTagValue ]]; then
+        if [[ ! -z $inputTagValue  && $inputTagValue != "development" ]]; then
                 $fetchTag
                 echo "----Git checking out... -"$inputTagValue"----"
                 ( cd ~/curofy && git checkout $inputTagValue )
@@ -43,11 +42,12 @@ if [[ ! -z $buildCommand ]]; then
                 tagFolder=$buildType"_development_"$latestCommitHash
         fi
   	newDir=~/"Brandon/builds/"$tagFolder
+	newFileName=$(ls $newDir)	
 	if [[ ! -d $newDir ]]; then
         	( cd ~/curofy && bash gradlew $buildCommand )
 	      	trap copyBuildToTagFolder EXIT		
 	else
-		echo "----DIRECTORY: "ls $newDir"----"
+		echo "----DIRECTORY: $newFileName ----"
 	fi
 else
         echo "Please enter correct build type"
