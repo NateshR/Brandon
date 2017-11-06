@@ -12,11 +12,7 @@ function buildCommandIndentifier {
 function copyBuildToTagFolder { 
         mkdir -p $newDir
 	echo "----COPYING----"
-	if [[ $buildType == "PRODUCTION" ]]; then
-		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/production/debug/*.apk $newDir)
-	else
-		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/staging/debug/*.apk $newDir)
-	fi
+	(find ~/curofy/presentation/build/outputs/apk/ -name ".apk" -exec cp -a {}  $newDir \)
 	newFileName=$(ls $newDir)	
 	echo "----DIRECTORY: $newDir"/"$newFileName ----"
 }
