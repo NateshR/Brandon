@@ -13,9 +13,9 @@ function copyBuildToTagFolder {
         mkdir -p $newDir
 	echo "----COPYING----"
 	if [[ $buildType == "PRODUCTION" ]]; then
-		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/production/debug/* $newDir)
+		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/production/debug/*.apk $newDir)
 	else
-		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/staging/debug/* $newDir)
+		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/staging/debug/*.apk $newDir)
 	fi
 	newFileName=$(ls $newDir)	
 	echo "----DIRECTORY: $newDir"/"$newFileName ----"
