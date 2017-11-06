@@ -12,7 +12,7 @@ function buildCommandIndentifier {
 function copyBuildToTagFolder { 
         mkdir -p $newDir
 	echo "----COPYING----"
-	find ~/curofy/presentation/build/outputs/apk/ -name ".apk" -exec cp -a {}  $newDir \
+	find ~/curofy/presentation/build/outputs/apk/ -name ".apk" -exec cp -a {}  $newDir \;
 	newFileName=$(ls $newDir)	
 	echo "----DIRECTORY: $newDir"/"$newFileName ----"
 }
