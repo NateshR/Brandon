@@ -16,6 +16,7 @@ function copyBuildToTagFolder {
 		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/production/debug/* $newDir)
 	else
 		(cd ~/Brandon/ &&  cp -a ~/curofy/presentation/build/outputs/apk/staging/debug/* $newDir)
+	fi
 	newFileName=$(ls $newDir)	
 	echo "----DIRECTORY: $newDir"/"$newFileName ----"
 }
